@@ -64,6 +64,7 @@
 
 //		ReactDOM.render(<Forecast {...state} />, $into);
 // 		ReactDOM.render(<Forecast {...state} />, into);
+
 /*
 		function Forecast(props) {
 			return (
@@ -74,13 +75,27 @@
 			)
 		}
 */
-		let container = document.createElement('div');
-		let cityPara = document.createElement('p');
-		let conditionsPara = document.createElement('p');
-		let iconImage = document.createElement('img');
-		updateActivityList();
-	}
 
+let container = document.createElement('div');
+let cityPara = document.createElement('p');
+cityPara.setAttribute('class','city');
+cityPara.textContent = state.city;
+let conditionsPara = document.createElement('p');
+conditionsPara.textContent = state.degCInt + '\u00B0 C / ' + state.degFInt + '\u00B0 F';
+let iconImage = document.createElement('img');
+iconImage.setAttribute('src', state.icon);
+iconImage.setAttribute('alt', state.condition);
+conditionsPara.appendChild(iconImage);
+container.appendChild(cityPara);
+container.appendChild(conditionsPara);
+if (document.querySelector('.conditions div')) {
+	into.replaceChild(container, document.querySelector('.conditions div'));
+} else {
+		into.appendChild(container);
+}
+
+updateActivityList();
+}
 	// handle selection of a new category (team/solo/all)
 	function updateActivityList(event) {
 //	if (event !== undefined && $(this).hasClass('selected')) {
@@ -133,6 +148,7 @@
 
 //		ReactDOM.render(<Activities {...state} />, $into);
 //		ReactDOM.render(<Activities {...state} />, into);
+
 /*
 		function Activities(props) {
 			const activitiesList = props.activities.map(function(activity, index) {
@@ -145,12 +161,23 @@
 			)
 		}
 */
+
 		let activitiesContainer = document.createElement('div');
 		let list = document.createElement('ul');
-		state.activities.forEach(function() {
+		state.activities.forEach(function(activity, index) {
 				let listItem = document.createElement('li');
+				listItem.textContent = activity;
+				listItem.setAttribute('key',index);
+				list.appendChild(listItem);
+//			console.log(listItem);
 //			console.log(listItem);
 		});
+		activitiesContainer.appendChild(list);
+		if (document.querySelector('.activities div')) {
+				into.replaceChild(activitiesContainer, document.querySelector('.activities div'));
+		} else {
+				into.appendChild(activitiesContainer);
+		}
 //			console.log(activitiesContainer);
 //			console.log(list);
 
@@ -159,6 +186,7 @@
 
 	// handle ajax failure
 	function updateUIFailure() {
-		$(".conditions").text("Weather information unavailable");
+//	$(".conditions").text("Weather information unavailable");
+		document.querySelector(".conditions").textContent = "Weather information unavailable";
 	}
 })();
